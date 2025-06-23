@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Edu+NSW+ACT+Cursive:wght@400..700&family=Lobster&family=Merienda:wght@300..900&family=Stardos+Stencil:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+    --font-heading: "Lobster", "sans-serif"; 
+    --font-vault: "Stardos Stencil", "sans-serif"; 
+    --font-cursive: "Edu NSW ACT Cursive", "sans-serif"; 
+    --font-article: "Merienda", "sans-serif"; 
+    --font-newheading: "Dancing Script", "sans-serif"; 
+
+
+}
