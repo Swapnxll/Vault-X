@@ -19,7 +19,7 @@ app.use(
 app.use(morgan("dev"));
 
 app.use(
-  "/public",
+  "/auth/public",
   createProxyMiddleware({
     target: process.env.auth_service,
     changeOrigin: true,
@@ -27,10 +27,19 @@ app.use(
   })
 );
 app.use(
-  "/protect",
+  "/auth/protect",
   verifyToken,
   createProxyMiddleware({
     target: process.env.auth_service,
+    changeOrigin: true,
+    //pathRewrite: { "^/user": "" }, //It removes /user from the beginning of the path.
+  })
+);
+
+app.use(
+  "/vault/public",
+  createProxyMiddleware({
+    target: process.env.vault_service,
     changeOrigin: true,
     //pathRewrite: { "^/user": "" }, //It removes /user from the beginning of the path.
   })
