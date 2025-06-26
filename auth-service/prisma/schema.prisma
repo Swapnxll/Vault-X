@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -18,6 +17,7 @@ model Auth {
   id           String        @id @default(cuid())
   email        String        @unique
   name         String?
+  profile      String?
   subscription Boolean       @default(false) // 👈 new field
   role         String        @default("user") // 👈 new field
   breaches     ExposedData[]

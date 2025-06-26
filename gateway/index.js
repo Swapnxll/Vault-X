@@ -3,11 +3,12 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import { verifyToken } from "./middlewares/auth.js";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 
 app.use(
   cors({
@@ -18,7 +19,16 @@ app.use(
 app.use(morgan("dev"));
 
 app.use(
-  "/auth",
+  "/public",
+  createProxyMiddleware({
+    target: process.env.auth_service,
+    changeOrigin: true,
+    //pathRewrite: { "^/user": "" }, //It removes /user from the beginning of the path.
+  })
+);
+app.use(
+  "/protect",
+  verifyToken,
   createProxyMiddleware({
     target: process.env.auth_service,
     changeOrigin: true,
