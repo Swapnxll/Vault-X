@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import userRoute from "./routes/userRoutes.js";
+import exposeRoute from "./routes/exposeRoute.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.use("/user", userRoute);
+app.use("/expose", exposeRoute);
 
 app.get("/", async (req, res) => {
   try {
