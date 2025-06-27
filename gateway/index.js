@@ -44,6 +44,15 @@ app.use(
     //pathRewrite: { "^/user": "" }, //It removes /user from the beginning of the path.
   })
 );
+app.use(
+  "/vault/protect",
+  verifyToken,
+  createProxyMiddleware({
+    target: process.env.vault_service,
+    changeOrigin: true,
+    //pathRewrite: { "^/user": "" }, //It removes /user from the beginning of the path.
+  })
+);
 
 app.listen(PORT, () => {
   console.log(`Gateway is running on port http://localhost:${PORT}`);

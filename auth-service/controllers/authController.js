@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_default_secret";
 
@@ -17,12 +18,28 @@ export const createUser = async (req, res) => {
     // Check if user already exists
     const existingUser = await prisma.auth.findUnique({ where: { email } });
     if (existingUser) {
-      return res.status(409).json({ error: "User already exists." });
+      // Generate JWT token for existing user
+      const token = jwt.sign({ id: existingUser.id }, JWT_SECRET, {
+        expiresIn: "7d",
+      });
+
+      return res.status(200).json({
+        message: "User already exists",
+        user: {
+          id: existingUser.id,
+          email: existingUser.email,
+          name: existingUser.name,
+        },
+        token,
+      });
     }
+
+    const newUserId = uuidv4();
 
     // Step 1: Sync to Vault first
     try {
       await axios.post("http://localhost:8080/vault/public/user/create", {
+        id: newUserId,
         email,
       });
     } catch (err) {
@@ -34,7 +51,12 @@ export const createUser = async (req, res) => {
 
     // Step 2: Only create user in Auth DB if Vault sync succeeded
     const user = await prisma.auth.create({
-      data: { email, name, profile },
+      data: {
+        id: newUserId,
+        email,
+        name,
+        profile,
+      },
     });
 
     // Generate JWT token

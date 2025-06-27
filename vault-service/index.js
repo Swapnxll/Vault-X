@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import userRoute from "./routes/userRoute.js";
+import vaultRoute from "./routes/vaultRoute.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.use("/user", userRoute);
+app.use("/vault", vaultRoute);
 
 app.get("/", async (req, res) => {
   try {

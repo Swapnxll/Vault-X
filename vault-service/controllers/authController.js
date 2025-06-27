@@ -4,15 +4,18 @@ const prisma = new PrismaClient();
 //POST VAULT/PUBLIC/USER/CREATE
 export const createUser = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { id, email } = req.body;
 
     if (!email) {
       return res.status(400).json({ error: "Email is required." });
     }
+    if (!id) {
+      return res.status(400).json({ error: "ID is required." });
+    }
 
     // Check if user already exists
     const existingUser = await prisma.auth.findUnique({
-      where: { email },
+      where: { id },
     });
 
     if (existingUser) {
@@ -22,6 +25,7 @@ export const createUser = async (req, res) => {
     // Create user
     const user = await prisma.auth.create({
       data: {
+        id,
         email,
       },
     });
