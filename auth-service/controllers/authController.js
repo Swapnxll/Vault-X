@@ -1,11 +1,14 @@
 import jwt from "jsonwebtoken";
 
 import { PrismaClient } from "@prisma/client";
+import dotenv from "dotenv";
 const prisma = new PrismaClient();
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import redisClient from "../config/redis.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_default_secret";
+dotenv.config();
 
 export const createUser = async (req, res) => {
   try {
@@ -84,7 +87,13 @@ export const getUser = async (req, res) => {
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized: User ID missing" });
     }
-    //if userid in redis cache then return from redis other wise return from db
+    // ✅ Check Redis cache first
+    const cachedUser = await redisClient.get(`user:${userId}`);
+    if (cachedUser) {
+      console.log("✅ Returned from Redis cache");
+      return res.status(200).json(JSON.parse(cachedUser));
+    }
+
     const user = await prisma.auth.findUnique({
       where: { id: userId },
       select: {
@@ -105,7 +114,11 @@ export const getUser = async (req, res) => {
       where: { userId: user.id },
     });
 
-    res.status(200).json(user);
+    const userData = { ...user, breaches: existingBreaches };
+
+    await redisClient.setEx(`user:${userId}`, 3600, JSON.stringify(userData));
+
+    res.status(200).json(userData);
   } catch (err) {
     console.error("Error fetching user:", err);
     res.status(500).json({ error: "Internal server error" });

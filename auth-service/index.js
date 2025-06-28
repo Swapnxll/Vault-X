@@ -6,6 +6,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import userRoute from "./routes/userRoutes.js";
 import exposeRoute from "./routes/exposeRoute.js";
+import { redisClient } from "./config/redis.js";
 
 dotenv.config();
 
