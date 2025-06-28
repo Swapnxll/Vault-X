@@ -1,57 +1,75 @@
 import React from "react";
-import { useAuth } from "../context/userContext";
-import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
+import img from "../assets/loginimg.jpg";
+import { useGoogleLogin } from "@react-oauth/google";
+//import { jwtDecode } from "jwt-decode";
+import { UserData } from "../context/userContext";
 
-const Login = () => {
-  const { user, isAuth, loginUser, loading } = useAuth();
-
-  const handleSuccess = async (credentialResponse) => {
-    try {
-      const decoded = jwtDecode(credentialResponse.credential);
-      const { name, email, picture } = decoded;
-      console.log(name, email, picture);
-      await loginUser({
-        name,
-        email,
-        profilePic: picture,
-      });
-    } catch (err) {
-      console.error("Login failed", err);
-    }
+const LoginComponent = ({ onClose }) => {
+  const { loginUser } = UserData();
+  const handleContentClick = (e) => {
+    e.stopPropagation();
   };
 
+  const Glogin = useGoogleLogin({
+    ux_mode: "popup",
+    scope: "openid email profile",
+    onSuccess: async (tokenResponse) => {
+      try {
+        const res = await fetch(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+            },
+          }
+        );
+        const userInfo = await res.json();
+        console.log(userInfo);
+
+        const payload = {
+          email: userInfo.email,
+          name: userInfo.name,
+          profile: userInfo.picture,
+        };
+        await loginUser(payload);
+      } catch (err) {
+        console.error("Failed to fetch user info:", err);
+      }
+    },
+    onError: () => {
+      console.log("Google Login Failed");
+    },
+  });
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      {loading ? (
-        <div className="text-xl font-semibold">Loading...</div>
-      ) : isAuth && user ? (
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Welcome, {user.name}!</h1>
-          <img
-            src={user.profilePic}
-            alt="Profile"
-            className="rounded-full w-24 h-24 mx-auto"
-          />
+    <div
+      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50"
+      onClick={onClose}
+    >
+      <div className="flex relative" onClick={handleContentClick}>
+        {/* Left Image */}
+        <div className="w-[200px] bg-white rounded-l-lg overflow-hidden">
+          <img src={img} alt="Login visual" className="w-full h-auto" />
         </div>
-      ) : (
-        <div className="p-8 bg-white rounded shadow text-center">
-          <h2 className="text-2xl font-semibold mb-4">Login with Google</h2>
-          <GoogleLogin
-            onSuccess={handleSuccess}
-            onError={() => alert("Login Failed")}
-          />
+
+        {/* Right Login Section */}
+        <div className="bg-[#cdc6be] w-[200px] flex flex-col items-center justify-center rounded-r-lg p-4">
+          <button
+            onClick={() => Glogin()}
+            className="bg-[#5c4035] text-white px-4 py-2 rounded shadow hover:bg-[#4a322b] transition"
+          >
+            Login with Google
+          </button>
+          <button
+            onClick={onClose}
+            className="mt-4 text-sm text-gray-600 hover:underline"
+          >
+            Close
+          </button>
         </div>
-      )}
+      </div>
     </div>
-    // <div className="p-8 bg-white rounded shadow text-center">
-    //   <h2 className="text-2xl font-semibold mb-4">Login with Google</h2>
-    //   <GoogleLogin
-    //     onSuccess={handleSuccess}
-    //     onError={() => alert("Login Failed")}
-    //   />
-    // </div>
   );
 };
 
-export default Login;
+export default LoginComponent;

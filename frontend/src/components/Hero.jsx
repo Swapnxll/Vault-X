@@ -91,15 +91,15 @@ const Hero = () => {
                 <p className="text-4xl font-bold text-[#cdc6be] font-heading mb-3">
                   Wanna know if you've been breached?
                 </p>
-                <p className="text-sm font-article text-neutral-300 mb-5 max-w-xl">
-                  <p className="text-sm font-article text-neutral-300 mb-5 max-w-xl">
+                <div className="text-sm font-article text-neutral-300 mb-5 max-w-xl">
+                  <p>
                     Your email might be floating around the dark web without you
                     even realizing it. Wanna know which websites may have leaked
                     your data? Find out if your credentials have been
                     compromised in recent breaches and take control of your
                     digital safety before it’s too late.
                   </p>
-                </p>
+                </div>
                 <div
                   onClick={() => navigate("/breach")}
                   className="inline-block  bg-white text-neutral-900 hover:bg-neutral-200 px-6 py-2 rounded-md transition duration-300 text-sm font-semibold shadow-sm hover:shadow-md ring-1 ring-white/10 hover:ring-white/30"
