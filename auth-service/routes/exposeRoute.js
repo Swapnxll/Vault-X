@@ -14,8 +14,6 @@ const checkLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-router.get("/check", checkLimiter, (req, res) => {
-  res.json({ message: "hello" });
-});
+router.get("/check", checkLimiter, checkbreach);
 
 export default router;

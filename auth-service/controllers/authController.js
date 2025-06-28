@@ -84,7 +84,7 @@ export const getUser = async (req, res) => {
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized: User ID missing" });
     }
-
+    //if userid in redis cache then return from redis other wise return from db
     const user = await prisma.auth.findUnique({
       where: { id: userId },
       select: {
@@ -100,6 +100,10 @@ export const getUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+
+    const existingBreaches = await prisma.exposedData.findMany({
+      where: { userId: user.id },
+    });
 
     res.status(200).json(user);
   } catch (err) {
