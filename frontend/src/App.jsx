@@ -7,6 +7,8 @@ import Home from "./pages/Home";
 import Breach from "./pages/Breach";
 import LoginComponent from "./components/LoginComponent";
 import { UserData } from "./context/userContext";
+import Profile from "./pages/Profile";
+import { Vault } from "lucide-react";
 
 const NewspaperPage = () => {
   const { user } = UserData();
@@ -16,8 +18,14 @@ const NewspaperPage = () => {
       <Navbar user={user} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/breach" element={<Breach />} />
-        <Route path="/login" element={<LoginComponent />} />
+        <Route path="/breach" element={<Breach user={user} />} />
+
+        <Route path="/vault" element={<Vault />} />
+        {/* <Route
+          path="/profile"
+          element={user ? <Profile user={user} /> : <Home />}
+        /> */}
+        <Route path="/profile" element={<Profile user={user} />} />
         {/* Add more routes as needed */}
       </Routes>
     </>

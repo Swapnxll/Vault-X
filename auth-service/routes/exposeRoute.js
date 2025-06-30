@@ -14,6 +14,6 @@ const checkLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-router.get("/check", checkLimiter, checkbreach);
+router.post("/check", checkLimiter, checkbreach);
 
 export default router;
