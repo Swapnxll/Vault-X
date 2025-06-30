@@ -117,7 +117,7 @@ export const getUser = async (req, res) => {
 
     const userData = { ...user, breaches: existingBreaches };
 
-    await redisClient.setEx(`user:${userId}`, 3600, JSON.stringify(userData));
+    await redisClient.setEx(`user:${userId}`, 60, JSON.stringify(userData));
 
     res.status(200).json(userData);
   } catch (err) {

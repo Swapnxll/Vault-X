@@ -197,7 +197,7 @@ export const fetchPasswordBySite = async (req, res) => {
   // ✅ Fetch multiple passwords by site
   const records = await prisma.vault.findMany({
     where: { userId, site },
-    select: { id: true, site: true, password: true },
+    select: { id: true, site: true, password: true, email: true },
   });
 
   if (!records || records.length === 0) {
@@ -210,6 +210,7 @@ export const fetchPasswordBySite = async (req, res) => {
     id: data.id,
     site: data.site,
     password: sc.decrypt(data.password),
+    email: data.email,
   }));
 
   res.status(200).json({ passwords: decryptedResults });
