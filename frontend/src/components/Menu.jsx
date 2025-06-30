@@ -45,6 +45,7 @@ const FullMenu = ({ isOpen, onClose }) => {
           <li
             onClick={() => {
               // Add route if needed
+              navigate("/vault");
               onClose();
             }}
             className="cursor-pointer"

@@ -8,7 +8,7 @@ import Breach from "./pages/Breach";
 import LoginComponent from "./components/LoginComponent";
 import { UserData } from "./context/userContext";
 import Profile from "./pages/Profile";
-import { Vault } from "lucide-react";
+import Vault from "./pages/Vault";
 
 const NewspaperPage = () => {
   const { user } = UserData();

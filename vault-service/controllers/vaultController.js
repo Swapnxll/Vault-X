@@ -23,6 +23,13 @@ export const createkey = async (req, res) => {
     return res.status(404).json({ error: "User not found." });
   }
 
+  // ✅ Check if masterkey already exists
+  if (user.masterkey) {
+    return res
+      .status(403)
+      .json({ error: "Masterkey already set for this user. Cannot change." });
+  }
+
   // ✅ Hash masterkey
   const saltRounds = 10;
   const hashedMasterkey = await bcrypt.hash(masterkey, saltRounds);
@@ -68,7 +75,7 @@ export const checkKey = async (req, res) => {
 };
 
 export const addpass = async (req, res) => {
-  const { site, password, masterkey } = req.body;
+  const { site, password, masterkey, email } = req.body;
   const userId = req.headers["x-user-id"];
 
   if (!site || !password || !masterkey) {
@@ -104,6 +111,7 @@ export const addpass = async (req, res) => {
   // ✅ Save to database
   await prisma.vault.create({
     data: {
+      email,
       site,
       password: encryptedPassword, // adjust field based on your schema
       userId,
