@@ -61,10 +61,8 @@ const VaultEntry = ({ setIsAuthenticated }) => {
         toast.error("Failed to create master key.");
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Error creating master key.",
-        error
-      );
+      toast.error("Error creating master key.");
+      console.error(error); // Log the error for debugging
     }
 
     setMasterKeyInput("");
