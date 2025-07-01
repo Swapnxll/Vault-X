@@ -41,7 +41,7 @@ export const createUser = async (req, res) => {
 
     // Step 1: Sync to Vault first
     try {
-      await axios.post("http://localhost:8080/vault/public/user/create", {
+      await axios.post(`${process.env.VAULT_URL}/vault/public/user/create`, {
         id: newUserId,
         email,
       });
