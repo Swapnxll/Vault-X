@@ -4,7 +4,9 @@ import { Menu } from "lucide-react";
 import FullMenu from "./Menu";
 import LoginComponent from "./LoginComponent";
 //import { UserData } from "../context/userContext";
+import { useVault } from "../context/vaultContext";
 const Navbar = ({ user }) => {
+  const { serversActive } = useVault();
   const navigate = useNavigate();
   //const { user } = UserData();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -53,10 +55,15 @@ const Navbar = ({ user }) => {
         <div className="flex items-center space-x-4">
           {!user && (
             <button
-              onClick={openLogin}
-              className="font-heading bg-[#5c4035] text-white px-3 py-1 rounded hover:bg-[#4a322b] hover:underline transition"
+              onClick={serversActive ? openLogin : null} // disable click if servers inactive
+              disabled={!serversActive}
+              className={`font-heading px-3 py-1 rounded transition ${
+                serversActive
+                  ? "bg-[#5c4035] text-white hover:bg-[#4a322b] hover:underline"
+                  : "bg-gray-400 text-gray-700 cursor-not-allowed"
+              }`}
             >
-              Get Started
+              {serversActive ? "Get Started" : "Please Wait..."}
             </button>
           )}
           <button

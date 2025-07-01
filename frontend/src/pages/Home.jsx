@@ -6,7 +6,9 @@ import toast from "react-hot-toast";
 import Hero from "../components/Hero";
 import Vaultcomponent from "../components/Vaultcomponent";
 import Footer from "../components/Footer";
+import { useVault } from "../context/vaultContext";
 const Home = () => {
+  const { setServersActive } = useVault();
   useEffect(() => {
     const urls = [
       `${import.meta.env.VITE_SERVER}/`,
@@ -16,9 +18,11 @@ const Home = () => {
     Promise.all(urls.map((url) => fetch(url).catch(() => {})))
       .then(() => {
         toast.success("All services are awake!");
+        setServersActive(true);
       })
       .catch(() => {
         toast.error("Failed to ping some services");
+        setServersActive(false);
       });
   }, []);
 

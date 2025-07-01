@@ -6,9 +6,17 @@ const VaultContext = createContext();
 
 export const VaultProvider = ({ children }) => {
   const [masterKey, setMasterKey] = useState("");
+  const [serversActive, setServersActive] = useState(false);
 
   return (
-    <VaultContext.Provider value={{ masterKey, setMasterKey }}>
+    <VaultContext.Provider
+      value={{
+        masterKey,
+        setMasterKey,
+        serversActive, // ✅ Exporting
+        setServersActive,
+      }}
+    >
       {children}
     </VaultContext.Provider>
   );
