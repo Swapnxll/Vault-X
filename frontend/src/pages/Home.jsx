@@ -10,7 +10,6 @@ const Home = () => {
   useEffect(() => {
     const urls = [
       `${import.meta.env.VITE_SERVER}/`,
-      `${import.meta.env.VITE_AUTH}/`,
       `${import.meta.env.VITE_VAULT}/`,
     ];
 
