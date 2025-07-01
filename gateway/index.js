@@ -8,7 +8,13 @@ import { verifyToken } from "./middlewares/auth.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8080;
+
+app.use((req, res, next) => {
+  fetch(`${process.env.auth_service}/`).catch(() => {});
+  fetch(`${process.env.vault_service}/`).catch(() => {});
+  next();
+});
 
 app.use(
   cors({
@@ -53,6 +59,14 @@ app.use(
     //pathRewrite: { "^/user": "" }, //It removes /user from the beginning of the path.
   })
 );
+
+app.get("/", (req, res) => {
+  // Fire-and-forget pings to both services
+  fetch(`${process.env.auth_service}/`).catch(() => {});
+  fetch(`${process.env.vault_service}/`).catch(() => {});
+
+  res.json({ message: "Gateway pinged both services to keep them alive" });
+});
 
 app.listen(PORT, () => {
   console.log(`Gateway is running on port http://localhost:${PORT}`);

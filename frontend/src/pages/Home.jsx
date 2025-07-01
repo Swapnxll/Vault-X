@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 // import { useNavigate } from "react-router-dom";
 
@@ -6,6 +6,12 @@ import Hero from "../components/Hero";
 import Vaultcomponent from "../components/Vaultcomponent";
 import Footer from "../components/Footer";
 const Home = () => {
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_SERVER}/`) // Replace with your actual gateway URL
+      .catch(() => {
+        // silently ignore errors
+      });
+  }, []);
   return (
     <>
       <Hero />
