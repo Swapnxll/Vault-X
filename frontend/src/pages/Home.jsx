@@ -1,17 +1,28 @@
 import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 // import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import Hero from "../components/Hero";
 import Vaultcomponent from "../components/Vaultcomponent";
 import Footer from "../components/Footer";
 const Home = () => {
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_SERVER}/`) // Replace with your actual gateway URL
+    const urls = [
+      `${import.meta.env.VITE_SERVER}/`,
+      `${import.meta.env.VITE_AUTH}/`,
+      `${import.meta.env.VITE_VAULT}/`,
+    ];
+
+    Promise.all(urls.map((url) => fetch(url).catch(() => {})))
+      .then(() => {
+        toast.success("All services are awake!");
+      })
       .catch(() => {
-        // silently ignore errors
+        toast.error("Failed to ping some services");
       });
   }, []);
+
   return (
     <>
       <Hero />
