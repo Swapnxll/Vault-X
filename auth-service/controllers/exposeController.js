@@ -103,6 +103,7 @@ export const checkbreach = async (req, res) => {
     });
 
     if (!user) {
+      console.log("random");
       return res
         .status(200)
         .json({ message: "Random user found", data: breaches });

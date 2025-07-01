@@ -7,15 +7,15 @@ const VaultActions = () => {
   const [showRetrieveForm, setShowRetrieveForm] = useState(false);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 w-full max-w-xl mx-auto">
       {/* Action buttons */}
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col sm:flex-row gap-4">
         <button
           onClick={() => {
             setShowAddForm(!showAddForm);
             setShowRetrieveForm(false);
           }}
-          className="w-full lg:w-1/2 bg-[#764b3a] hover:bg-[#5a372a] text-white px-4 py-10 rounded font-pixel text-2xl"
+          className="flex-1 bg-[#764b3a] hover:bg-[#5a372a] text-white px-4 py-3 rounded font-article text-lg sm:text-xl"
         >
           Add Password
         </button>
@@ -24,7 +24,7 @@ const VaultActions = () => {
             setShowRetrieveForm(!showRetrieveForm);
             setShowAddForm(false);
           }}
-          className="w-full lg:w-1/2 bg-[#764b3a] hover:bg-[#5a372a] text-white px-4 py-10 rounded font-pixel text-2xl"
+          className="flex-1 bg-[#764b3a] hover:bg-[#5a372a] text-white px-4 py-3 rounded font-article text-lg sm:text-xl"
         >
           Show Password
         </button>

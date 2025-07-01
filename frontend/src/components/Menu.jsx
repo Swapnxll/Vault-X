@@ -2,7 +2,7 @@ import React from "react";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const FullMenu = ({ isOpen, onClose }) => {
+const FullMenu = ({ isOpen, onClose, user }) => {
   const navigate = useNavigate();
   return (
     <div
@@ -29,7 +29,7 @@ const FullMenu = ({ isOpen, onClose }) => {
               navigate("/profile");
               onClose();
             }}
-            className="cursor-pointer"
+            className={`cursor-pointer ${!user ? "line-through" : ""}`}
           >
             Home
           </li>
@@ -38,38 +38,30 @@ const FullMenu = ({ isOpen, onClose }) => {
               navigate("/breach");
               onClose();
             }}
-            className="cursor-pointer"
+            className={`cursor-pointer ${!user ? "line-through" : ""}`}
           >
             The Breach
           </li>
           <li
             onClick={() => {
-              // Add route if needed
               navigate("/vault");
               onClose();
             }}
-            className="cursor-pointer"
+            className={`cursor-pointer ${!user ? "line-through" : ""}`}
           >
             The Vault
           </li>
-          <li
-            onClick={() => {
-              // Add route if needed
-              onClose();
-            }}
-            className="cursor-pointer"
-          >
-            Privacy Policy
-          </li>
-          <li
-            onClick={() => {
-              // Add route if needed
-              onClose();
-            }}
-            className="cursor-pointer"
-          >
-            About Me
-          </li>
+          {!user && (
+            <li
+              onClick={() => {
+                navigate("/");
+                onClose();
+              }}
+              className="cursor-pointer"
+            >
+              Get Started
+            </li>
+          )}
         </ul>
       </div>
     </div>

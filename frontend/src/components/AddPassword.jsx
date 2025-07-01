@@ -21,7 +21,7 @@ const AddPasswordForm = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:8080/vault/protect/vault/add",
+        `${import.meta.env.VITE_SERVER}/vault/protect/vault/add`,
         {
           email: emailInput,
           site: siteInput,
@@ -52,15 +52,15 @@ const AddPasswordForm = () => {
   };
 
   return (
-    <div className="bg-[#3d3d3d] p-6 rounded-lg border border-black space-y-4">
-      <h3 className="text-2xl font-vault text-[#764b3a]">Add New Password</h3>
+    <div className=" p-6 rounded-lg border border-black space-y-4 text-center">
+      <h3 className="text-4xl font-article  text-black">Add New Password</h3>
 
       <input
         type="email"
         value={emailInput}
         onChange={(e) => setEmailInput(e.target.value)}
         placeholder="Email"
-        className="w-full border rounded px-4 py-2 font-pixel focus:outline-none focus:ring-2 focus:ring-[#764b3a]"
+        className="w-full border text-black rounded px-4 py-2 font-article focus:outline-none focus:ring-2 focus:ring-[#764b3a]"
       />
 
       <input
@@ -68,7 +68,7 @@ const AddPasswordForm = () => {
         value={siteInput}
         onChange={(e) => setSiteInput(e.target.value)}
         placeholder="Site Name"
-        className="w-full border rounded px-4 py-2 font-pixel focus:outline-none focus:ring-2 focus:ring-[#764b3a]"
+        className="w-full border text-black rounded px-4 py-2 font-article focus:outline-none focus:ring-2 focus:ring-[#764b3a]"
       />
 
       <input
@@ -76,13 +76,13 @@ const AddPasswordForm = () => {
         value={passwordInput}
         onChange={(e) => setPasswordInput(e.target.value)}
         placeholder="Password"
-        className="w-full border rounded px-4 py-2 font-pixel focus:outline-none focus:ring-2 focus:ring-[#764b3a]"
+        className="w-full border text-black rounded px-4 py-2 font-article focus:outline-none focus:ring-2 focus:ring-[#764b3a]"
       />
 
       <button
         onClick={handleAddPassword}
         disabled={loading}
-        className="bg-[#764b3a] hover:bg-[#5a372a] text-white px-4 py-2 rounded font-pixel w-full"
+        className="bg-[#764b3a] hover:bg-[#5a372a] text-white px-4 py-2 rounded font-article w-full"
       >
         {loading ? "Saving..." : "Save Password"}
       </button>

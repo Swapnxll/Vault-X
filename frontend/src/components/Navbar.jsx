@@ -70,7 +70,7 @@ const Navbar = ({ user }) => {
       </nav>
 
       {/* Full Menu Component */}
-      <FullMenu isOpen={isMenuOpen} onClose={closeMenu} />
+      <FullMenu isOpen={isMenuOpen} onClose={closeMenu} user={user} />
 
       {/* Login Popup Component */}
       {showLogin && <LoginComponent onClose={closeLogin} />}

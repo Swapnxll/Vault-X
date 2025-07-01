@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useVault } from "../context/vaultContext";
+import { Eye, EyeOff, Copy } from "lucide-react";
 
 const RetrievePasswordForm = () => {
   const [retrieveSite, setRetrieveSite] = useState("");
@@ -21,7 +22,7 @@ const RetrievePasswordForm = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:8080/vault/protect/vault/site",
+        `${import.meta.env.VITE_SERVER}/vault/protect/vault/site`,
         {
           site: retrieveSite,
           masterkey: masterKey,
@@ -48,9 +49,9 @@ const RetrievePasswordForm = () => {
         setRetrievedData(null);
       }
     } catch (error) {
-      console.error(error);
       toast.error(
-        error.response?.data?.message || "Error retrieving password."
+        error.response?.data?.message || "Error retrieving password.",
+        error
       );
       setRetrievedData(null);
     } finally {
@@ -66,47 +67,49 @@ const RetrievePasswordForm = () => {
   };
 
   return (
-    <div className="bg-[#3d3d3d] p-6 rounded-lg border border-black space-y-4">
-      <h3 className="text-2xl font-vault text-[#764b3a]">Retrieve Password</h3>
+    <div className=" p-6 rounded-lg border border-black space-y-4">
+      <h3 className="text-4xl text-center font-article text-black">
+        Show Password
+      </h3>
 
       <input
         type="text"
         value={retrieveSite}
         onChange={(e) => setRetrieveSite(e.target.value)}
         placeholder="Site Name"
-        className="w-full border rounded px-4 py-2 font-pixel focus:outline-none focus:ring-2 focus:ring-[#764b3a]"
+        className="w-full border rounded px-4 py-2 font-article focus:outline-none text-black focus:ring-2 focus:ring-[#764b3a]"
       />
 
       <button
         onClick={handleRetrievePassword}
         disabled={loading}
-        className="bg-[#764b3a] hover:bg-[#5a372a] text-white px-4 py-2 rounded font-pixel w-full"
+        className="bg-[#764b3a] hover:bg-[#5a372a] text-white px-4 py-2 rounded font-article w-full"
       >
         {loading ? "Loading..." : "Get Password"}
       </button>
 
       {/* Retrieved Password Card */}
       {retrievedData && (
-        <div className="mt-4 bg-[#252525] p-4 rounded-lg border border-black space-y-2">
+        <div className="mt-4  p-4 rounded-lg border border-black space-y-2">
           <h4 className="text-xl font-vault text-[#764b3a]">
             Site: {retrievedData.site}
           </h4>
-          <p className="text-gray-300">Email: {retrievedData.email}</p>
+          <p className="text-black text-xl font-article">
+            Email: {retrievedData.email}
+          </p>
           <div className="flex items-center gap-4">
-            <span className="font-pixel">
+            <span className="font-article text-3xl text-black">
               {showPassword ? retrievedData.password : "••••••••••"}
             </span>
             <button
               onClick={() => setShowPassword(!showPassword)}
-              className="text-sm underline text-[#764b3a]"
+              className="text-[#764b3a]"
             >
-              {showPassword ? "Hide" : "Show"}
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
-            <button
-              onClick={handleCopy}
-              className="text-sm underline text-[#764b3a]"
-            >
-              Copy
+
+            <button onClick={handleCopy} className="text-[#764b3a]">
+              <Copy size={20} />
             </button>
           </div>
         </div>

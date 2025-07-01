@@ -24,7 +24,6 @@ const LoginComponent = ({ onClose }) => {
           }
         );
         const userInfo = await res.json();
-        console.log(userInfo);
 
         const payload = {
           email: userInfo.email,
@@ -60,12 +59,12 @@ const LoginComponent = ({ onClose }) => {
           >
             Login with Google
           </button>
-          <button
+          {/* <button
             onClick={onClose}
             className="mt-4 text-sm text-gray-600 hover:underline"
           >
             Close
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

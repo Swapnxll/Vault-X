@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import identity from "../assets/identity.jpg";
 import Footer from "../components/Footer";
+import toast from "react-hot-toast";
 
 const Breach = ({ user }) => {
   const [email, setEmail] = useState("");
@@ -10,12 +11,12 @@ const Breach = ({ user }) => {
 
   const handleCheckBreach = async () => {
     if (!email.trim()) return;
-    console.log(email);
+
     setLoading(true);
     try {
       const token = localStorage.getItem("token"); // Adjust key if different
       const { data } = await axios.post(
-        "http://localhost:8080/auth/public/expose/check",
+        `${import.meta.env.VITE_SERVER}/auth/public/expose/check`,
         { email },
         {
           headers: {
@@ -24,10 +25,11 @@ const Breach = ({ user }) => {
           },
         }
       );
-      console.log(data);
+
+      toast.success("Success");
       setBreaches(data.data || []);
     } catch (error) {
-      console.error("Error checking breach:", error);
+      toast.error("Something went wrong", error);
       setBreaches([]);
     }
     setLoading(false);
@@ -82,7 +84,7 @@ const Breach = ({ user }) => {
                     >
                       <div className="flex-1">
                         <p className="text-white font-medium font-article text-lg sm:text-xl break-words">
-                          {breach.site}
+                          {breach.breach || breach.site}
                         </p>
                         <p className="text-gray-400 text-sm break-words line-clamp-2">
                           {breach.description}
@@ -91,7 +93,8 @@ const Breach = ({ user }) => {
                           Domain: {breach.domain} | Industry: {breach.industry}
                         </p>
                         <p className="text-gray-300 text-xs break-words mt-1">
-                          Exposed Data: {breach.xposedDate}
+                          Exposed Year:{" "}
+                          {breach.xposed_date || breach.xposedDate}
                         </p>
                       </div>
                       <div className="hidden sm:block w-20 h-20 rounded-full overflow-hidden border border-gray-400 flex-shrink-0 mx-auto sm:mx-0">

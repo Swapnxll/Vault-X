@@ -4,6 +4,7 @@ import cat from "../assets/cat.jpg"; // Make sure this path is correct
 import Footer from "../components/Footer";
 
 const UserProfile = ({ user }) => {
+  console.log(user.profile);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const chatEndRef = useRef(null);
@@ -16,9 +17,12 @@ const UserProfile = ({ user }) => {
     setMessages((prev) => [...prev, userMsg]);
 
     try {
-      const { data } = await axios.post("http://localhost:8000/chat", {
-        message: input,
-      });
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_SERVER_CHAT}/chat`,
+        {
+          message: input,
+        }
+      );
       const botMsg = { sender: "bot", text: data.response };
       setMessages((prev) => [...prev, botMsg]);
     } catch (error) {
@@ -52,11 +56,11 @@ const UserProfile = ({ user }) => {
             <div className="p-4 rounded-lg border-2 border-dashed border-white flex-1">
               {/* Profile */}
               <div className="flex items-start mb-6 space-x-4">
-                <div className="w-24 h-24 rounded-full border-2 border-dashed border-white overflow-hidden">
+                <div className="hidden sm:block w-24 h-24 rounded-full border-2 border-dashed border-white overflow-hidden">
                   <img
                     src={user.profile}
                     alt="Profile"
-                    className="w-full h-full object-cover"
+                    className=" w-full h-full object-cover "
                   />
                 </div>
                 <div className="space-y-2">
@@ -71,6 +75,15 @@ const UserProfile = ({ user }) => {
                     {user.subscription ? "Active" : "Not Subscribed"}
                   </p>
                 </div>
+                <button
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    window.location.reload(); // 🔄 refresh to reflect logout
+                  }}
+                  className="text-xs font-article left text-white bg-red-800 rounded-2xl p-2"
+                >
+                  Logout
+                </button>
               </div>
 
               {/* Breaches */}

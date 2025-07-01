@@ -30,7 +30,6 @@ export const UserContextProvider = ({ children }) => {
 
       // 🔑 Save only the token
       localStorage.setItem("token", data.token);
-      console.log(data);
 
       setBtnLoading(false);
       navigate("/");
@@ -40,7 +39,6 @@ export const UserContextProvider = ({ children }) => {
     } catch (error) {
       setBtnLoading(false);
       toast.error(error.response?.data?.message || "Login failed");
-      console.error(error);
     }
   }
 
@@ -70,7 +68,7 @@ export const UserContextProvider = ({ children }) => {
 
       setIsAuth(!!data.user); // boolean conversion for safety
     } catch (err) {
-      console.error(err);
+      toast.error(err);
       setUser(null);
       setIsAuth(false);
     } finally {

@@ -18,14 +18,17 @@ const NewspaperPage = () => {
       <Navbar user={user} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/breach" element={<Breach user={user} />} />
+        <Route
+          path="/breach"
+          element={user ? <Breach user={user} /> : <Home />}
+        />
 
-        <Route path="/vault" element={<Vault />} />
-        {/* <Route
+        <Route path="/vault" element={user ? <Vault /> : <Home />} />
+        <Route
           path="/profile"
           element={user ? <Profile user={user} /> : <Home />}
-        /> */}
-        <Route path="/profile" element={<Profile user={user} />} />
+        />
+
         {/* Add more routes as needed */}
       </Routes>
     </>
