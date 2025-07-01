@@ -68,7 +68,9 @@ export const UserContextProvider = ({ children }) => {
 
       setIsAuth(!!data.user); // boolean conversion for safety
     } catch (err) {
-      toast.error(err);
+      toast.error(
+        err.response?.data?.message || err.message || "Failed to fetch user"
+      );
       setUser(null);
       setIsAuth(false);
     } finally {

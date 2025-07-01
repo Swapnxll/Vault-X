@@ -44,7 +44,7 @@ const AddPasswordForm = () => {
         toast.error("Failed to add password.");
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast.error(error.response?.data?.message || "Error adding password.");
     } finally {
       setLoading(false);

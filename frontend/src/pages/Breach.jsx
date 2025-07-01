@@ -29,7 +29,8 @@ const Breach = ({ user }) => {
       toast.success("Success");
       setBreaches(data.data || []);
     } catch (error) {
-      toast.error("Something went wrong", error);
+      toast.error("Something went wrong");
+      console.log(error);
       setBreaches([]);
     }
     setLoading(false);
